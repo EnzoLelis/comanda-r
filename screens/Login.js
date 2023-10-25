@@ -4,18 +4,33 @@ import Button from '../components/button';
 import Input from '../components/input';
 
 export default function Login({navigation}) {
+  const [email, setEmail] = useState('')
+  const [senha, setSenha] = useState('')
+  const [erro, setErro] = useState('')
+  const {login} = useContext(AuthContext)
+
+  async function handleLogin(){
+    if (await login({email, senha})){
+      navigation.navigate("Comanda")
+    }else{
+      setErro("usúario ou senha inválidos")
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require('../assets/home.jpg')} />
       <Text>Sistema</Text>
       <Text style={styles.title}>Comanda</Text>
 
-      <Input placeholder='e-mail'/>
-      <Input placeholder='senha' secureTextEntry/>
+      <Input placeholder='e-mail' value={email} onChangeText={setEmail}/>
+      <Input placeholder='senha' value={senha} onChangeText={setSenha} secureTextEntry/>
 
       <Button onPress={() => navigation.navigate('Comanda')}>
         Entrar
       </Button>
+
+      <Text>{erro}</Text>
       
       <TouchableOpacity >
         <Text>criar conta</Text>
